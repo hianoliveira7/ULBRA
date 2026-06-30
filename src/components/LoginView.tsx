@@ -9,7 +9,6 @@ interface LoginViewProps {
 
 export default function LoginView({ users, onLogin }: LoginViewProps) {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSignup, setIsSignup] = useState(false);
 
@@ -21,13 +20,7 @@ export default function LoginView({ users, onLogin }: LoginViewProps) {
     const foundUser = users.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
     
     if (foundUser) {
-      // In this system, password matches the part before @ for simplicity, or "admin"/"user"
-      const expectedPass = foundUser.role === 'admin' ? 'admin' : 'user';
-      if (password === expectedPass) {
-        onLogin(foundUser);
-      } else {
-        setError(`Senha incorreta. Use "admin" para ADM ou "user" para Profissional.`);
-      }
+      onLogin(foundUser);
     } else {
       setError('E-mail não cadastrado neste núcleo.');
     }
@@ -87,7 +80,6 @@ export default function LoginView({ users, onLogin }: LoginViewProps) {
               <div className="space-y-4 pt-4">
                 <input type="text" placeholder="Nome Completo" className="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800" />
                 <input type="email" placeholder="E-mail Corporativo" className="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800" />
-                <input type="password" placeholder="Definir Senha" className="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800" />
                 <button className="w-full py-2.5 bg-red-800 text-white font-medium text-sm rounded-lg hover:bg-red-900">
                   Solicitar Cadastro
                 </button>
@@ -120,23 +112,6 @@ export default function LoginView({ users, onLogin }: LoginViewProps) {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="ex: admin@nucleo.edu"
-                      className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800 focus:bg-white transition-all text-gray-800"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Senha de Acesso</label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                      <Lock className="h-4 w-4" />
-                    </span>
-                    <input
-                      type="password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Senha"
                       className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800 focus:bg-white transition-all text-gray-800"
                     />
                   </div>
