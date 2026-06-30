@@ -56,6 +56,8 @@ export interface SchedulingRequest {
   id: string;
   patientId: string;
   patientName: string;
+  studentId?: string; // Add this
+  studentName?: string; // Add this
   requesterName: string;
   requestedDate: string;
   requestedTime: string;

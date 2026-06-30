@@ -8,6 +8,7 @@ import {
 interface SchedulingViewProps {
   requests: SchedulingRequest[];
   patients: Patient[];
+  students: Student[]; // Add students
   currentUser: User;
   onAddRequest: (request: Omit<SchedulingRequest, 'id' | 'status' | 'requesterName'>) => void;
   onUpdateRequestStatus: (id: string, status: 'Marcado' | 'Não Marcado', feedback?: string) => void;
@@ -16,6 +17,7 @@ interface SchedulingViewProps {
 export default function SchedulingView({
   requests,
   patients,
+  students, // Add students
   currentUser,
   onAddRequest,
   onUpdateRequestStatus,
@@ -24,6 +26,7 @@ export default function SchedulingView({
   
   // New Request Form state
   const [selectedPatientId, setSelectedPatientId] = useState('');
+  const [selectedStudentId, setSelectedStudentId] = useState(''); // Add this
   const [requestedDate, setRequestedDate] = useState('');
   const [requestedTime, setRequestedTime] = useState('');
   const [reason, setReason] = useState('');
@@ -45,10 +48,14 @@ export default function SchedulingView({
 
     const patient = patients.find(p => p.id === selectedPatientId);
     if (!patient) return;
+    
+    const student = students.find(s => s.id === selectedStudentId);
 
     onAddRequest({
       patientId: patient.id,
       patientName: patient.name,
+      studentId: student?.id,
+      studentName: student?.name,
       requestedDate,
       requestedTime,
       reason,
@@ -56,6 +63,7 @@ export default function SchedulingView({
 
     // Reset Form
     setSelectedPatientId('');
+    setSelectedStudentId('');
     setRequestedDate('');
     setRequestedTime('');
     setReason('');
@@ -316,6 +324,21 @@ export default function SchedulingView({
                 <option value="">-- Escolha o Paciente do Núcleo --</option>
                 {patients.map(p => (
                   <option key={p.id} value={p.id}>{p.name} ({p.category})</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Selecione o Aluno *</label>
+              <select
+                required
+                value={selectedStudentId}
+                onChange={(e) => setSelectedStudentId(e.target.value)}
+                className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800 font-semibold"
+              >
+                <option value="">-- Escolha o Aluno --</option>
+                {students.map(s => (
+                  <option key={s.id} value={s.id}>{s.name} ({s.internshipStage})</option>
                 ))}
               </select>
             </div>

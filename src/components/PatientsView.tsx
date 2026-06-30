@@ -50,7 +50,7 @@ export default function PatientsView({
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
 
-  // Add Patient Form State
+    // Add Patient Form State
   const [newPatient, setNewPatient] = useState({
     name: '',
     cpf: '',
@@ -64,10 +64,6 @@ export default function PatientsView({
     reasonForConsultation: '',
     clinicalHistory: '',
     observations: '',
-    studentId: '',
-    studentName: '',
-    internshipStage: '',
-    attendanceTime: '',
   });
 
   // Edit Patient Form State
@@ -143,9 +139,6 @@ export default function PatientsView({
       reasonForConsultation: '',
       clinicalHistory: '',
       observations: '',
-      studentName: '',
-      internshipStage: '',
-      attendanceTime: '',
     });
   };
 
@@ -493,86 +486,7 @@ export default function PatientsView({
                     className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Horário de Atendimento *</label>
-                  <input
-                    type="time"
-                    required
-                    value={newPatient.attendanceTime}
-                    onChange={(e) => setNewPatient({ ...newPatient, attendanceTime: e.target.value })}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800"
-                  />
-                </div>
               </div>
-            </div>
-
-            {/* Section: Aluno Responsável */}
-            <div className="space-y-4 pt-4 border-t border-slate-100">
-              <h3 className="text-xs font-bold text-rose-800 uppercase tracking-widest border-b border-rose-100 pb-1.5 flex items-center space-x-1.5">
-                <span className="inline-block w-2 h-2 rounded-full bg-rose-700"></span>
-                <span>Responsável pela Admissão (Aluno de Estágio)</span>
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Selecionar Aluno Cadastrado</label>
-                  <select
-                    value={newPatient.studentId || ''}
-                    onChange={(e) => {
-                      const selectedId = e.target.value;
-                      if (selectedId === '') {
-                        setNewPatient({ ...newPatient, studentId: '', studentName: '', internshipStage: '' });
-                      } else {
-                        const s = students.find(std => std.id === selectedId);
-                        if (s) {
-                          setNewPatient({ 
-                            ...newPatient, 
-                            studentId: s.id, 
-                            studentName: s.name, 
-                            internshipStage: s.internshipStage 
-                          });
-                        } else if (selectedId === 'custom') {
-                          setNewPatient({ ...newPatient, studentId: 'custom' });
-                        }
-                      }
-                    }}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800 font-semibold"
-                  >
-                    <option value="">-- Escolha um Aluno Cadastrado --</option>
-                    {students.map(s => (
-                      <option key={s.id} value={s.id}>{s.name} ({s.internshipStage})</option>
-                    ))}
-                    <option value="custom">-- Digitar Aluno Manualmente --</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Nome Completo do Aluno *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Nome do aluno que realizou a admissão"
-                    value={newPatient.studentName}
-                    onChange={(e) => setNewPatient({ ...newPatient, studentName: e.target.value, studentId: newPatient.studentId === 'custom' ? 'custom' : '' })}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Estágio / Período / Setor *</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="ex: Fisioterapia Neurofuncional II (8º Período)"
-                    value={newPatient.internshipStage}
-                    onChange={(e) => setNewPatient({ ...newPatient, internshipStage: e.target.value, studentId: newPatient.studentId === 'custom' ? 'custom' : '' })}
-                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800"
-                  />
-                </div>
-              </div>
-              <p className="text-[10px] text-slate-400 mt-1">
-                Para um controle completo de escalas e prontuários por aluno, prefira cadastrar o acadêmico previamente na aba <strong>Admissão de Alunos</strong>.
-              </p>
             </div>
 
             {/* Section 2: Especialidade e Diagnóstico Clínico */}
@@ -643,7 +557,6 @@ export default function PatientsView({
                 </div>
               </div>
             </div>
-
           </div>
 
           {/* Footer Actions */}

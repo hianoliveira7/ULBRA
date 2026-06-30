@@ -425,6 +425,7 @@ export default function App() {
           <SchedulingView 
             requests={requests} 
             patients={patients} 
+            students={students}
             currentUser={currentUser}
             onAddRequest={handleAddRequest}
             onUpdateRequestStatus={handleUpdateRequestStatus}
