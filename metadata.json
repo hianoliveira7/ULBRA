@@ -1,0 +1,6 @@
+{
+  "name": "Prontuário do Núcleo de Atendimento à Comunidade",
+  "description": "Plataforma web para gestão de prontuários clínicos, organização de pacientes e acompanhamento em clínicas escola ou núcleos de atendimento comunitário.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
