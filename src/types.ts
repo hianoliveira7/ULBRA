@@ -25,6 +25,7 @@ export interface Patient {
   diagnosis: string;
   status: PatientStatus;
   admissionDate: string;
+  admittedBy?: string; // Add this
   reasonForConsultation?: string;
   clinicalHistory?: string;
   observations: string;

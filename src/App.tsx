@@ -197,6 +197,7 @@ export default function App() {
       ...patientData,
       id: `p_${Date.now()}`,
       admissionDate: dateStr,
+      admittedBy: currentUser.name,
     };
 
     setPatients(prev => [newPatient, ...prev]);

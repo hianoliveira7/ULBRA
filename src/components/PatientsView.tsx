@@ -4,7 +4,7 @@ import {
   Search, Plus, Filter, User as UserIcon, Calendar, Phone, Mail, 
   MapPin, Clipboard, FileText, History, FileCheck, ArrowUpRight, 
   Trash2, Edit, X, Save, AlertTriangle, ChevronRight, CheckCircle2,
-  Printer, ArrowLeft, Heart, Send, UserCheck
+  Printer, ArrowLeft, Heart, Send, UserCheck, UserPlus
 } from 'lucide-react';
 
 export const getCategoryColorClass = (cat: string): string => {
@@ -351,7 +351,7 @@ export default function PatientsView({
                                   </p>
                                 )}
                                 <p className="text-[11px] text-slate-400">
-                                  Admitido em: {patient.admissionDate}
+                                  Admitido em: {patient.admissionDate}{patient.admittedBy && ` por ${patient.admittedBy}`}
                                 </p>
                               </div>
                             </div>
@@ -764,20 +764,19 @@ export default function PatientsView({
                     )}
                   </div>
                 </div>
+                <div className="flex items-start space-x-2.5">
+                  <UserPlus className="h-4 w-4 text-slate-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-[10px] text-slate-400 uppercase tracking-wide">Admitido por</p>
+                    <p className="font-medium text-slate-800 text-slate-700">{selectedPatient.admittedBy || 'Não informado'}</p>
+                  </div>
+                </div>
               </div>
             </div>
 
             {/* Admin Controls on Patient details */}
             <div className="mt-8 pt-6 border-t border-slate-100 space-y-2.5">
               
-              {/* PRINT / GEN REPORT BUTTON (Accessible by ALL roles as clinical differentiation!) */}
-              <button
-                onClick={() => setReportModalOpen(true)}
-                className="w-full py-2 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-100 font-bold text-xs rounded-lg flex items-center justify-center space-x-2 transition-all cursor-pointer"
-              >
-                <Printer className="h-4 w-4" />
-                <span>Gerar Relatório Clínico</span>
-              </button>
 
               {editingPatient ? (
                 <div className="grid grid-cols-2 gap-2">
@@ -865,7 +864,7 @@ export default function PatientsView({
                       </div>
                       
                       <div>
-                        <p className="text-[10px] text-slate-400 uppercase tracking-wide">Aluno Admissor *</p>
+                        <p className="text-[10px] text-slate-400 uppercase tracking-wide">Aluno Atendente *</p>
                         <input
                           type="text"
                           required
@@ -895,7 +894,7 @@ export default function PatientsView({
                         </p>
                       </div>
                       <div>
-                        <p className="text-[10px] text-slate-400 uppercase tracking-wide">Aluno Admissor</p>
+                        <p className="text-[10px] text-slate-400 uppercase tracking-wide">Aluno Atendente</p>
                         <p className="font-bold text-slate-800 text-xs mt-1">
                           {selectedPatient.studentName || 'Não Informado'}
                         </p>
@@ -1049,7 +1048,7 @@ export default function PatientsView({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs mt-3.5 pt-3 border-t border-slate-50">
                   <div>
-                    <span className="text-slate-400 block text-[10px]">Aluno Admissor (Clínica-Escola)</span>
+                    <span className="text-slate-400 block text-[10px]">Aluno Atendente (Clínica-Escola)</span>
                     <strong className="text-rose-950 font-semibold">{selectedPatient.studentName || 'Não Informado'}</strong>
                   </div>
                   <div>

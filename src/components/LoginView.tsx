@@ -70,21 +70,20 @@ export default function LoginView({ users, onLogin }: LoginViewProps) {
         <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
           
           {isSignup ? (
-            <div className="space-y-4">
-              <button onClick={() => setIsSignup(false)} className="flex items-center text-xs text-gray-500 hover:text-gray-800 font-semibold mb-4">
-                <ArrowLeft className="h-3 w-3 mr-1" /> Voltar ao Login
-              </button>
-              <h2 className="text-2xl font-bold text-gray-800">Cadastrar Novo Usuário</h2>
-              <p className="text-gray-500 text-sm mt-1">Preencha os dados abaixo para solicitar acesso</p>
-              
-              <div className="space-y-4 pt-4">
-                <input type="text" placeholder="Nome Completo" className="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800" />
-                <input type="email" placeholder="E-mail Corporativo" className="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800" />
-                <button className="w-full py-2.5 bg-red-800 text-white font-medium text-sm rounded-lg hover:bg-red-900">
-                  Solicitar Cadastro
+              <div className="space-y-4">
+                <button onClick={() => setIsSignup(false)} className="flex items-center text-xs text-gray-500 hover:text-gray-800 font-semibold mb-4">
+                  <ArrowLeft className="h-3 w-3 mr-1" /> Voltar ao Login
                 </button>
+                <h2 className="text-2xl font-bold text-gray-800">Cadastrar Novo Usuário</h2>
+                <p className="text-gray-500 text-sm mt-1">Preencha os dados abaixo</p>
+                
+                <div className="space-y-4 pt-4">
+                  <input type="text" placeholder="Nome de Usuário" className="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800" />
+                  <button className="w-full py-2.5 bg-red-800 text-white font-medium text-sm rounded-lg hover:bg-red-900">
+                    Cadastrar
+                  </button>
+                </div>
               </div>
-            </div>
           ) : (
             <>
               <div className="mb-6">
@@ -101,21 +100,23 @@ export default function LoginView({ users, onLogin }: LoginViewProps) {
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">E-mail Corporativo</label>
+                  <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Nome de Usuário</label>
                   <div className="relative">
                     <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
                       <Mail className="h-4 w-4" />
                     </span>
                     <input
-                      type="email"
+                      type="text"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="ex: admin@nucleo.edu"
+                      placeholder="ex: usuario123"
                       className="w-full pl-10 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800 focus:bg-white transition-all text-gray-800"
                     />
                   </div>
                 </div>
+
+
 
                 <div className="text-right">
                   <button type="button" onClick={() => setIsSignup(true)} className="text-xs text-red-800 font-semibold hover:underline">
