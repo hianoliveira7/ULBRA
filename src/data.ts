@@ -40,26 +40,31 @@ export const INITIAL_STUDENTS: Student[] = [
     id: 's1',
     name: 'Gabriel de Souza Lima',
     internshipStage: 'Fisioterapia Neurofuncional II (8º Período)',
+    semester: '2026.1',
   },
   {
     id: 's2',
     name: 'Beatriz Santos Ribeiro',
     internshipStage: 'Psicologia Clínica Integrada (9º Período)',
+    semester: '2026.1',
   },
   {
     id: 's3',
     name: 'Felipe Augusto Antunes',
     internshipStage: 'Nutrição Ambulatorial (7º Período)',
+    semester: '2026.1',
   },
   {
     id: 's4',
     name: 'Mariana Duarte Costa',
     internshipStage: 'Fonoaudiologia e Linguagem Infantil (8º Período)',
+    semester: '2026.1',
   },
   {
     id: 's5',
     name: 'Rodrigo Alves de Souza',
     internshipStage: 'Ortopedia e Reabilitação Esportiva (8º Período)',
+    semester: '2026.1',
   }
 ];
 
@@ -82,6 +87,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     studentId: 's1',
     studentName: 'Gabriel de Souza Lima',
     internshipStage: 'Fisioterapia Neurofuncional II (8º Período)',
+    attendanceTime: '08:00',
   },
   {
     id: 'p2',
@@ -101,6 +107,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     studentId: 's2',
     studentName: 'Beatriz Santos Ribeiro',
     internshipStage: 'Psicologia Clínica Integrada (9º Período)',
+    attendanceTime: '10:00',
   },
   {
     id: 'p3',
@@ -120,6 +127,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     studentId: 's3',
     studentName: 'Felipe Augusto Antunes',
     internshipStage: 'Nutrição Ambulatorial (7º Período)',
+    attendanceTime: '14:00',
   },
   {
     id: 'p4',
@@ -139,6 +147,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     studentId: 's4',
     studentName: 'Mariana Duarte Costa',
     internshipStage: 'Fonoaudiologia e Linguagem Infantil (8º Período)',
+    attendanceTime: '09:00',
   },
   {
     id: 'p5',
@@ -158,6 +167,7 @@ export const INITIAL_PATIENTS: Patient[] = [
     studentId: 's5',
     studentName: 'Rodrigo Alves de Souza',
     internshipStage: 'Ortopedia e Reabilitação Esportiva (8º Período)',
+    attendanceTime: '16:00',
   },
 ];
 

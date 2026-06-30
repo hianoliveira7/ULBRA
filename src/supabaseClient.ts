@@ -62,6 +62,7 @@ CREATE TABLE IF NOT EXISTS public.nac_students (
     phone TEXT,
     email TEXT,
     internship_stage TEXT NOT NULL, -- Mapped to internshipStage
+    semester TEXT NOT NULL, -- Mapped to semester
     admission_date TEXT NOT NULL, -- Mapped to admissionDate
     status TEXT NOT NULL DEFAULT 'Ativo' CHECK (status IN ('Ativo', 'Inativo')),
     observations TEXT,

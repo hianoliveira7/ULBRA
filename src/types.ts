@@ -31,12 +31,14 @@ export interface Patient {
   studentId?: string; // Mapped to student ID
   studentName?: string;
   internshipStage?: string;
+  attendanceTime?: string; // Add this
 }
 
 export interface Student {
   id: string;
   name: string;
   internshipStage: string; // e.g., 'Fisioterapia Neurofuncional II (8º Período)'
+  semester: string; // Add this
 }
 
 export interface Evolution {

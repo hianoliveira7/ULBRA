@@ -27,31 +27,41 @@ export default function StudentsView({
   const [searchQuery, setSearchQuery] = useState('');
   
   // Form states
-  const [name, setName] = useState('');
+  const [bulkNames, setBulkNames] = useState('');
   const [internshipStage, setInternshipStage] = useState(CLINICAL_CATEGORIES[0]);
+  const [semester, setSemester] = useState('2026.1');
   const [error, setError] = useState('');
 
   const handleAddSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    if (!name.trim()) {
-      setError('O nome do aluno é obrigatório.');
+    const names = bulkNames.split('\n').map(n => n.trim()).filter(n => n !== '');
+    if (names.length === 0) {
+      setError('Informe pelo menos um nome de aluno.');
       return;
     }
     if (!internshipStage.trim()) {
       setError('O estágio / período é obrigatório.');
       return;
     }
+    if (!semester.trim()) {
+      setError('O semestre é obrigatório.');
+      return;
+    }
 
-    onAddStudent({
-      name: name.trim(),
-      internshipStage: internshipStage.trim(),
+    names.forEach(name => {
+      onAddStudent({
+        name: name,
+        internshipStage: internshipStage.trim(),
+        semester: semester.trim(),
+      });
     });
 
     // Reset fields
-    setName('');
+    setBulkNames('');
     setInternshipStage(CLINICAL_CATEGORIES[0]);
+    setSemester('2026.1');
     setShowAddForm(false);
   };
 
@@ -157,29 +167,43 @@ export default function StudentsView({
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Nome Completo do Aluno *</label>
-                <input
-                  type="text"
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Nomes dos Alunos (um por linha) *</label>
+                <textarea
                   required
-                  placeholder="Nome do aluno"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Nome do aluno 1&#10;Nome do aluno 2"
+                  value={bulkNames}
+                  onChange={(e) => setBulkNames(e.target.value)}
                   className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800"
+                  rows={5}
                 />
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">Especialidade / Setor de Alocação *</label>
-                <select
-                  required
-                  value={internshipStage}
-                  onChange={(e) => setInternshipStage(e.target.value)}
-                  className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800 font-semibold"
-                >
-                  {CLINICAL_CATEGORIES.map(cat => (
-                    <option key={cat} value={cat}>{cat}</option>
-                  ))}
-                </select>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Especialidade / Setor de Alocação *</label>
+                  <select
+                    required
+                    value={internshipStage}
+                    onChange={(e) => setInternshipStage(e.target.value)}
+                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800 font-semibold"
+                  >
+                    {CLINICAL_CATEGORIES.map(cat => (
+                      <option key={cat} value={cat}>{cat}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Semestre (ex: 2026.1) *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="2026.1"
+                    value={semester}
+                    onChange={(e) => setSemester(e.target.value)}
+                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800"
+                  />
+                </div>
               </div>
             </div>
           </div>

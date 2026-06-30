@@ -152,6 +152,7 @@ function mapStudentFromDb(row: any): Student {
     id: row.id,
     name: row.name,
     internshipStage: row.internship_stage || '',
+    semester: row.semester || '',
   };
 }
 
@@ -160,6 +161,7 @@ function mapStudentToDb(s: Student) {
     id: s.id,
     name: s.name,
     internship_stage: s.internshipStage,
+    semester: s.semester,
   };
 }
 

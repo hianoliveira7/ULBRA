@@ -21,6 +21,7 @@ import PatientsView from './components/PatientsView';
 import SchedulingView from './components/SchedulingView';
 import UsersView from './components/UsersView';
 import StudentsView from './components/StudentsView';
+import ReportView from './components/ReportView';
 
 // Icons
 import { 
@@ -63,7 +64,7 @@ export default function App() {
 
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
     const saved = localStorage.getItem('nac_current_user');
-    return saved ? JSON.parse(saved) : null;
+    return saved ? JSON.parse(saved) : INITIAL_USERS[0] || null;
   });
 
   const [currentView, setCurrentView] = useState<string>('dashboard');
@@ -374,11 +375,6 @@ export default function App() {
   };
 
 
-  // --- LOGIN ROUTING ---
-  if (!currentUser) {
-    return <LoginView users={users} onLogin={handleLogin} />;
-  }
-
 
   // --- VIEW RENDERING ---
   const renderViewContent = () => {
@@ -415,6 +411,13 @@ export default function App() {
             onAddStudent={handleAddStudent}
             onUpdateStudent={handleUpdateStudent}
             onDeleteStudent={handleDeleteStudent}
+          />
+        );
+      case 'report':
+        return (
+          <ReportView 
+            patients={patients} 
+            students={students}
           />
         );
       case 'scheduling':
@@ -455,6 +458,7 @@ export default function App() {
     { id: 'dashboard', label: 'Painel Geral', icon: LayoutDashboard, roles: ['admin', 'user'] },
     { id: 'patients', label: 'Pacientes & Prontuários', icon: ClipboardList, roles: ['admin', 'user'] },
     { id: 'students', label: 'Admissão de Alunos', icon: GraduationCap, roles: ['admin', 'user'] },
+    { id: 'report', label: 'Relatório de Atendimentos', icon: LayoutDashboard, roles: ['admin', 'user'] },
     { id: 'scheduling', label: 'Agendamentos', icon: CalendarDays, roles: ['admin', 'user'] },
     { id: 'users', label: 'Controle Usuários', icon: UserCog, roles: ['admin'] },
   ];

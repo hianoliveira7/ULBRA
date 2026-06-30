@@ -67,6 +67,7 @@ export default function PatientsView({
     studentId: '',
     studentName: '',
     internshipStage: '',
+    attendanceTime: '',
   });
 
   // Edit Patient Form State
@@ -144,6 +145,7 @@ export default function PatientsView({
       observations: '',
       studentName: '',
       internshipStage: '',
+      attendanceTime: '',
     });
   };
 
@@ -488,6 +490,16 @@ export default function PatientsView({
                     placeholder="Rua, Número, Bairro, Cidade - UF"
                     value={newPatient.address}
                     onChange={(e) => setNewPatient({ ...newPatient, address: e.target.value })}
+                    className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">Horário de Atendimento *</label>
+                  <input
+                    type="time"
+                    required
+                    value={newPatient.attendanceTime}
+                    onChange={(e) => setNewPatient({ ...newPatient, attendanceTime: e.target.value })}
                     className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500 focus:bg-white text-slate-800"
                   />
                 </div>
