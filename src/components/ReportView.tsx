@@ -1,19 +1,22 @@
 import React from 'react';
-import { Patient, Student, CLINICAL_CATEGORIES } from '../types';
+import { Patient, Student, User, CLINICAL_CATEGORIES } from '../types';
 import { LayoutDashboard } from 'lucide-react';
 
 interface ReportViewProps {
   patients: Patient[];
   students: Student[];
+  currentUser: User;
 }
 
-export default function ReportView({ patients, students }: ReportViewProps) {
+export default function ReportView({ patients, students, currentUser }: ReportViewProps) {
   // Group students by clinical category (from their internshipStage)
-  const groupedData = CLINICAL_CATEGORIES.map(category => {
+  const groupedData = CLINICAL_CATEGORIES.filter(category => {
+    return currentUser.role === 'admin' || category === currentUser.specialty;
+  }).map(category => {
     const studentsInCategory = students.filter(s => s.internshipStage.includes(category));
     
     const studentsWithPatients = studentsInCategory.map(student => {
-      const assignedPatients = patients.filter(p => p.studentId === student.id || p.studentName === student.name);
+      const assignedPatients = patients.filter(p => (p.studentId === student.id || p.studentName === student.name) && (currentUser.role === 'admin' || p.category.includes(currentUser.specialty)));
       return { student, patients: assignedPatients };
     });
 

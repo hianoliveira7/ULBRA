@@ -248,6 +248,57 @@ export default function DashboardView({
           {/* Left Bento: Specialties and Pending Requests */}
           <div className="lg:col-span-2 space-y-6">
             
+            {/* Bento Panel 2: Pending Scheduling Requests */}
+            <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-5">
+              <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-50">
+                <div>
+                  <h2 className="text-sm font-bold text-slate-800">Solicitações de Agendamento</h2>
+                  <p className="text-[11px] text-slate-400 mt-0.5">Aguardando aprovação administrativa</p>
+                </div>
+                <button
+                  onClick={() => onNavigateTo('scheduling')}
+                  className="text-xs font-bold text-rose-800 hover:text-rose-950 px-2.5 py-1 rounded-lg hover:bg-rose-50 transition-all cursor-pointer"
+                >
+                  Ver Todas
+                </button>
+              </div>
+
+              {recentPendingRequests.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {recentPendingRequests.map((req) => (
+                    <div key={req.id} className="p-3.5 rounded-xl bg-slate-50/50 hover:bg-slate-50 border border-slate-100 transition-all flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-start justify-between">
+                          <p className="text-xs font-bold text-slate-800 truncate pr-1" title={req.patientName}>
+                            {req.patientName}
+                          </p>
+                          <span className="shrink-0 w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                        </div>
+                        <p className="text-[10px] text-slate-400 mt-1 truncate">
+                          Por: <span className="font-semibold text-slate-500">{req.requesterName}</span>
+                        </p>
+                        
+                        <p className="text-[11px] text-slate-500 bg-white/70 p-1.5 rounded border border-slate-100 mt-2.5 italic line-clamp-1">
+                          "{req.reason}"
+                        </p>
+                      </div>
+
+                      <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+                        <span>{req.requestedDate}</span>
+                        <span className="font-bold text-slate-600">{req.requestedTime}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-6 text-center bg-slate-50/50 rounded-xl border border-dashed border-slate-200">
+                  <CalendarCheck className="h-7 w-7 text-slate-300 mb-1.5" />
+                  <p className="text-xs font-semibold text-slate-500">Nenhum agendamento pendente</p>
+                  <p className="text-[10px] text-slate-400 mt-0.5">Todos os pedidos foram processados.</p>
+                </div>
+              )}
+            </div>
+
             {/* Bento Panel 1: Clean consolidated specialty table */}
             <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-5">
               <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-50">
@@ -298,57 +349,6 @@ export default function DashboardView({
                   </tbody>
                 </table>
               </div>
-            </div>
-
-            {/* Bento Panel 2: Pending Scheduling Requests */}
-            <div className="bg-white rounded-xl border border-slate-100 shadow-sm p-5">
-              <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-50">
-                <div>
-                  <h2 className="text-sm font-bold text-slate-800">Solicitações de Agendamento</h2>
-                  <p className="text-[11px] text-slate-400 mt-0.5">Aguardando aprovação administrativa</p>
-                </div>
-                <button
-                  onClick={() => onNavigateTo('scheduling')}
-                  className="text-xs font-bold text-rose-800 hover:text-rose-950 px-2.5 py-1 rounded-lg hover:bg-rose-50 transition-all cursor-pointer"
-                >
-                  Ver Todas
-                </button>
-              </div>
-
-              {recentPendingRequests.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {recentPendingRequests.map((req) => (
-                    <div key={req.id} className="p-3.5 rounded-xl bg-slate-50/50 hover:bg-slate-50 border border-slate-100 transition-all flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-start justify-between">
-                          <p className="text-xs font-bold text-slate-800 truncate pr-1" title={req.patientName}>
-                            {req.patientName}
-                          </p>
-                          <span className="shrink-0 w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                        </div>
-                        <p className="text-[10px] text-slate-400 mt-1 truncate">
-                          Por: <span className="font-semibold text-slate-500">{req.requesterName}</span>
-                        </p>
-                        
-                        <p className="text-[11px] text-slate-500 bg-white/70 p-1.5 rounded border border-slate-100 mt-2.5 italic line-clamp-1">
-                          "{req.reason}"
-                        </p>
-                      </div>
-
-                      <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
-                        <span>{req.requestedDate}</span>
-                        <span className="font-bold text-slate-600">{req.requestedTime}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center py-6 text-center bg-slate-50/50 rounded-xl border border-dashed border-slate-200">
-                  <CalendarCheck className="h-7 w-7 text-slate-300 mb-1.5" />
-                  <p className="text-xs font-semibold text-slate-500">Nenhum agendamento pendente</p>
-                  <p className="text-[10px] text-slate-400 mt-0.5">Todos os pedidos foram processados.</p>
-                </div>
-              )}
             </div>
 
           </div>
@@ -403,35 +403,6 @@ export default function DashboardView({
               </div>
             </div>
 
-            {/* Bento Panel 4: Clean Activity Timeline Feed */}
-            <div className="bg-white p-5 rounded-xl border border-slate-100 shadow-sm flex-1 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center justify-between mb-3 pb-2 border-b border-slate-50">
-                  <h2 className="text-sm font-bold text-slate-800">Atividades Recentes</h2>
-                  <span className="text-[10px] text-slate-400">Log do Sistema</span>
-                </div>
-
-                <div className="space-y-3.5 relative before:absolute before:inset-y-0.5 before:left-2 before:w-[1px] before:bg-slate-100">
-                  {recentLogs.map((log) => (
-                    <div key={log.id} className="relative pl-6 text-xs">
-                      {/* Tiny bullet point on the vertical line */}
-                      <div className="absolute left-1 top-1 w-2 h-2 rounded-full border border-white bg-rose-700"></div>
-                      <div className="flex items-center justify-between text-[10px] text-slate-400 font-semibold">
-                        <span>{log.userName} • {log.userRole === 'admin' ? 'Admin' : 'Prof.'}</span>
-                        <span>{log.timestamp}</span>
-                      </div>
-                      <p className="text-slate-600 mt-0.5 leading-relaxed font-medium">
-                        {log.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-slate-50 flex items-center justify-between text-[10px] text-slate-400">
-                <span>Auditoria clínica ativa</span>
-              </div>
-            </div>
 
           </div>
 
@@ -463,12 +434,24 @@ export default function DashboardView({
           </p>
         </div>
         
-        {/* Dynamic Contextual Action */}
-        <div className="shrink-0 relative z-10 flex items-center bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-100">
-          <Clock className="h-4.5 w-4.5 text-rose-800 mr-2 shrink-0" />
-          <div className="text-left">
-            <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider leading-none">Acesso Rápido</p>
-            <p className="text-[11px] font-extrabold text-slate-700 mt-1 leading-none">Agendamento por Horário</p>
+        {/* Dynamic Contextual Actions */}
+        <div className="shrink-0 relative z-10 flex items-center gap-3">
+          {currentUser?.role === 'admin' && (
+            <button
+              onClick={() => onNavigateTo('patients')}
+              className="px-5 py-3 bg-rose-800 hover:bg-rose-900 text-white font-black text-sm rounded-xl transition-all shadow-lg shadow-rose-900/20 cursor-pointer flex items-center space-x-2"
+            >
+              <span>Admitir Paciente</span>
+              <ArrowUpRight className="h-4 w-4" />
+            </button>
+          )}
+          
+          <div className="flex items-center bg-slate-50 px-4 py-2.5 rounded-xl border border-slate-100">
+            <Clock className="h-4.5 w-4.5 text-rose-800 mr-2 shrink-0" />
+            <div className="text-left">
+              <p className="text-[9px] text-slate-400 font-bold uppercase tracking-wider leading-none">Acesso Rápido</p>
+              <p className="text-[11px] font-extrabold text-slate-700 mt-1 leading-none">Agendamento por Horário</p>
+            </div>
           </div>
         </div>
       </div>

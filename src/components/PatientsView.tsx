@@ -26,6 +26,7 @@ interface PatientsViewProps {
   onUpdatePatient: (patient: Patient) => void;
   onDeletePatient: (id: string) => void;
   onAddEvolution: (patientId: string, description: string) => void;
+  initialShowAddForm?: boolean;
 }
 
 export default function PatientsView({
@@ -37,9 +38,10 @@ export default function PatientsView({
   onUpdatePatient,
   onDeletePatient,
   onAddEvolution,
+  initialShowAddForm = false,
 }: PatientsViewProps) {
   // Views state: 'list' | 'create' | 'details' | 'edit'
-  const [viewState, setViewState] = useState<'list' | 'create' | 'details'>('list');
+  const [viewState, setViewState] = useState<'list' | 'create' | 'details'>(initialShowAddForm ? 'create' : 'list');
   const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
   
   // Tab within details view
@@ -85,8 +87,9 @@ export default function PatientsView({
 
     const matchesCategory = selectedCategory === 'all' || patient.category.split(',').map(s => s.trim()).includes(selectedCategory);
     const matchesStatus = selectedStatus === 'all' || patient.status === selectedStatus;
+    const isAuthorizedCategory = currentUser.role === 'admin' || patient.category.split(',').map(s => s.trim()).includes(currentUser.specialty);
 
-    return matchesSearch && matchesCategory && matchesStatus;
+    return matchesSearch && matchesCategory && matchesStatus && isAuthorizedCategory;
   });
 
   // Group filtered patients by category / specialty

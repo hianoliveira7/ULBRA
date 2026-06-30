@@ -27,7 +27,7 @@ import ReportView from './components/ReportView';
 import { 
   LayoutDashboard, Users, CalendarDays, ClipboardList, 
   UserCog, LogOut, Activity, Menu, X, Shield, Stethoscope,
-  Database, Copy, Check, AlertTriangle, Loader2, GraduationCap
+  Database, Copy, Check, AlertTriangle, Loader2, GraduationCap, UserPlus
 } from 'lucide-react';
 
 export default function App() {
@@ -64,10 +64,11 @@ export default function App() {
 
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
     const saved = localStorage.getItem('nac_current_user');
-    return saved ? JSON.parse(saved) : INITIAL_USERS[0] || null;
+    return saved ? JSON.parse(saved) : null;
   });
 
   const [currentView, setCurrentView] = useState<string>('dashboard');
+  const [openPatientAdmission, setOpenPatientAdmission] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Supabase Database Connection States
@@ -376,6 +377,12 @@ export default function App() {
 
 
 
+  // --- LOGIN ROUTING ---
+  if (!currentUser) {
+    return <LoginView users={users} onLogin={handleLogin} />;
+  }
+
+
   // --- VIEW RENDERING ---
   const renderViewContent = () => {
     switch (currentView) {
@@ -386,11 +393,17 @@ export default function App() {
             requests={requests} 
             logs={logs} 
             currentUser={currentUser} 
-            onNavigateTo={setCurrentView} 
+            onNavigateTo={(view) => {
+              if (view === 'patients') setOpenPatientAdmission(true);
+              setCurrentView(view);
+            }} 
             onAddRequest={handleAddRequest}
           />
         );
       case 'patients':
+        const show = openPatientAdmission;
+        // Reset after rendering
+        setTimeout(() => setOpenPatientAdmission(false), 100);
         return (
           <PatientsView 
             patients={patients} 
@@ -401,6 +414,7 @@ export default function App() {
             onUpdatePatient={handleUpdatePatient}
             onDeletePatient={handleDeletePatient}
             onAddEvolution={handleAddEvolution}
+            initialShowAddForm={show}
           />
         );
       case 'students':
@@ -418,6 +432,7 @@ export default function App() {
           <ReportView 
             patients={patients} 
             students={students}
+            currentUser={currentUser}
           />
         );
       case 'scheduling':
@@ -457,7 +472,7 @@ export default function App() {
   // Sidebar navigation options
   const navigationItems = [
     { id: 'dashboard', label: 'Painel Geral', icon: LayoutDashboard, roles: ['admin', 'user'] },
-    { id: 'patients', label: 'Pacientes & Prontuários', icon: ClipboardList, roles: ['admin', 'user'] },
+    { id: 'patients', label: 'Admissão de Paciente', icon: ClipboardList, roles: ['admin'] },
     { id: 'students', label: 'Admissão de Alunos', icon: GraduationCap, roles: ['admin', 'user'] },
     { id: 'report', label: 'Relatório de Atendimentos', icon: LayoutDashboard, roles: ['admin', 'user'] },
     { id: 'scheduling', label: 'Agendamentos', icon: CalendarDays, roles: ['admin', 'user'] },
@@ -533,6 +548,23 @@ export default function App() {
                 <X className="h-4 w-4" />
               </button>
             </div>
+
+            {/* Admit Patient Button */}
+            {currentUser?.role === 'admin' && (
+              <div className="px-5 mb-6">
+                <button
+                  onClick={() => {
+                    setOpenPatientAdmission(true);
+                    setCurrentView('patients');
+                    setSidebarOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center space-x-2 bg-rose-700 hover:bg-rose-800 text-white font-extrabold text-sm py-3 px-4 rounded-xl shadow-lg transition-all cursor-pointer"
+                >
+                  <UserPlus className="h-4 w-4" />
+                  <span>Admitir Paciente</span>
+                </button>
+              </div>
+            )}
 
             {/* Navigation Menus */}
             <nav className="space-y-1">
