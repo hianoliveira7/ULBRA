@@ -180,6 +180,12 @@ export default function App() {
     await addLog(user, 'Login', `Profissional ${user.name} realizou login no sistema.`);
   };
 
+  const handleRegister = async (newUser: User) => {
+    setUsers(prev => [...prev, newUser]);
+    await saveUser(newUser);
+    await addLog(newUser, 'Cadastro', `Novo profissional cadastrado: ${newUser.name} (${newUser.specialty}).`);
+  };
+
   const handleLogout = async () => {
     if (currentUser) {
       await addLog(currentUser, 'Logout', `Profissional ${currentUser.name} encerrou a sessão.`);
@@ -380,7 +386,7 @@ export default function App() {
 
   // --- LOGIN ROUTING ---
   if (!currentUser) {
-    return <LoginView users={users} onLogin={handleLogin} />;
+    return <LoginView users={users} onLogin={handleLogin} onRegister={handleRegister} />;
   }
 
 

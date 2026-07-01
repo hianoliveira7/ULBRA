@@ -1,29 +1,83 @@
 import React, { useState } from 'react';
-import { User } from '../types';
-import { Stethoscope, Lock, Mail, ChevronRight, Activity, ShieldAlert, UserPlus, ArrowLeft } from 'lucide-react';
+import { User, CLINICAL_CATEGORIES } from '../types';
+import { Stethoscope, Lock, Mail, ChevronRight, Activity, ShieldAlert, UserPlus, ArrowLeft, CheckCircle2 } from 'lucide-react';
 
 interface LoginViewProps {
   users: User[];
   onLogin: (user: User) => void;
+  onRegister: (user: User) => void;
 }
 
-export default function LoginView({ users, onLogin }: LoginViewProps) {
+export default function LoginView({ users, onLogin, onRegister }: LoginViewProps) {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [isSignup, setIsSignup] = useState(false);
+
+  // Sign up states
+  const [signupName, setSignupName] = useState('');
+  const [signupUsername, setSignupUsername] = useState('');
+  const [signupSpecialty, setSignupSpecialty] = useState(CLINICAL_CATEGORIES[0] || 'Saúde Coletiva');
+  const [signupRole, setSignupRole] = useState<'admin' | 'user'>('user');
+  const [signupSuccess, setSignupSuccess] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
-    // Check against predefined emails
+    // Check against predefined emails/usernames
     const foundUser = users.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
     
     if (foundUser) {
       onLogin(foundUser);
     } else {
-      setError('E-mail não cadastrado neste núcleo.');
+      setError('Nome de usuário não cadastrado neste núcleo.');
     }
+  };
+
+  const handleSignupSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSignupSuccess('');
+
+    if (!signupName.trim()) {
+      setError('Por favor, informe seu Nome Completo.');
+      return;
+    }
+
+    if (!signupUsername.trim()) {
+      setError('Por favor, escolha um Nome de Usuário.');
+      return;
+    }
+
+    const cleanUsername = signupUsername.trim().toLowerCase();
+
+    // Check if username/email already exists
+    const existing = users.find(u => u.email.toLowerCase() === cleanUsername);
+    if (existing) {
+      setError('Este nome de usuário já está cadastrado.');
+      return;
+    }
+
+    const newUser: User = {
+      id: `u_${Date.now()}`,
+      name: signupName.trim(),
+      email: cleanUsername,
+      role: signupRole,
+      specialty: signupSpecialty,
+      active: true
+    };
+
+    onRegister(newUser);
+    setSignupSuccess('Cadastro realizado com sucesso! Redirecionando...');
+    
+    // Reset inputs and return to login screen
+    setSignupName('');
+    setSignupUsername('');
+    setTimeout(() => {
+      setIsSignup(false);
+      setSignupSuccess('');
+      setEmail(cleanUsername); // Pre-populate login input
+    }, 2000);
   };
 
   const handleQuickLogin = (user: User) => {
@@ -70,20 +124,94 @@ export default function LoginView({ users, onLogin }: LoginViewProps) {
         <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
           
           {isSignup ? (
-              <div className="space-y-4">
-                <button onClick={() => setIsSignup(false)} className="flex items-center text-xs text-gray-500 hover:text-gray-800 font-semibold mb-4">
+              <form onSubmit={handleSignupSubmit} className="space-y-4">
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    setIsSignup(false);
+                    setError('');
+                    setSignupSuccess('');
+                  }} 
+                  className="flex items-center text-xs text-gray-500 hover:text-gray-800 font-semibold mb-4 cursor-pointer"
+                >
                   <ArrowLeft className="h-3 w-3 mr-1" /> Voltar ao Login
                 </button>
                 <h2 className="text-2xl font-bold text-gray-800">Cadastrar Novo Usuário</h2>
-                <p className="text-gray-500 text-sm mt-1">Preencha os dados abaixo</p>
+                <p className="text-gray-500 text-sm mt-1">Preencha os dados abaixo para se cadastrar</p>
                 
-                <div className="space-y-4 pt-4">
-                  <input type="text" placeholder="Nome de Usuário" className="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800" />
-                  <button className="w-full py-2.5 bg-red-800 text-white font-medium text-sm rounded-lg hover:bg-red-900">
-                    Cadastrar
+                {error && (
+                  <div className="p-3 bg-red-50 border border-red-100 text-red-800 rounded-lg text-xs flex items-center space-x-2">
+                    <ShieldAlert className="h-4 w-4 shrink-0 text-red-600" />
+                    <span>{error}</span>
+                  </div>
+                )}
+
+                {signupSuccess && (
+                  <div className="p-3 bg-green-50 border border-green-100 text-green-800 rounded-lg text-xs flex items-center space-x-2">
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-green-600" />
+                    <span>{signupSuccess}</span>
+                  </div>
+                )}
+
+                <div className="space-y-3.5 pt-2">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Nome Completo</label>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="ex: Dr. João Pedro" 
+                      value={signupName}
+                      onChange={(e) => setSignupName(e.target.value)}
+                      className="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800 text-gray-800 font-medium" 
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Nome de Usuário</label>
+                    <input 
+                      type="text" 
+                      required
+                      placeholder="ex: joaopedro" 
+                      value={signupUsername}
+                      onChange={(e) => setSignupUsername(e.target.value)}
+                      className="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800 text-gray-800 font-medium" 
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Especialidade Clínica</label>
+                    <select
+                      value={signupSpecialty}
+                      onChange={(e) => setSignupSpecialty(e.target.value)}
+                      className="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800 text-gray-800 font-medium"
+                    >
+                      {CLINICAL_CATEGORIES.map(category => (
+                        <option key={category} value={category}>{category}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Perfil de Acesso</label>
+                    <select
+                      value={signupRole}
+                      onChange={(e) => setSignupRole(e.target.value as 'admin' | 'user')}
+                      className="w-full px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-800 text-gray-800 font-medium"
+                    >
+                      <option value="user">Profissional de Atendimento (Acesso Restrito)</option>
+                      <option value="admin">Administrador (Acesso Total)</option>
+                    </select>
+                  </div>
+
+                  <button 
+                    type="submit"
+                    className="w-full py-2.5 bg-red-800 text-white font-bold text-sm rounded-lg hover:bg-red-950 cursor-pointer flex items-center justify-center space-x-2 mt-4 transition-all"
+                  >
+                    <UserPlus className="h-4 w-4" />
+                    <span>Cadastrar e Avançar</span>
                   </button>
                 </div>
-              </div>
+              </form>
           ) : (
             <>
               <div className="mb-6">
